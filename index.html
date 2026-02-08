@@ -809,7 +809,6 @@ input[type="range"]::-moz-range-thumb {
 </div>
 
 <script>
-let yesScale = 1;
 let heartsInterval;
 let musicInterval;
 let catchCount = 0;
@@ -844,7 +843,6 @@ musicInterval = setInterval(createMusicNote, 1000);
 function show(id) {
   document.querySelector('.container.active').classList.remove('active');
   document.getElementById(id).classList.add('active');
-  applyYesSize();
   
   // Special handlers for specific pages
   if (id === 'no12') {
@@ -866,7 +864,6 @@ function show(id) {
 }
 
 function noClicked(nextId) {
-  yesScale += 0.25;
   show(nextId);
   
   // Shake animation
@@ -883,12 +880,6 @@ function yesClicked() {
   for (let i = 0; i < 100; i++) {
     setTimeout(createHeart, i * 50);
   }
-}
-
-function applyYesSize() {
-  document.querySelectorAll('.yes').forEach(btn => {
-    btn.style.transform = `scale(${yesScale})`;
-  });
 }
 
 // Math challenge
@@ -1135,9 +1126,6 @@ function createFireworks() {
     }, i * 20);
   }
 }
-
-// Initialize
-applyYesSize();
 </script>
 
 </body>
