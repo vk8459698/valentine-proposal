@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Will You Be My Valentine, Akanksha? 💖</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Comic Sans MS', 'Arial', sans-serif;
+}
+
+body {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url('https://i.pinimg.com/originals/04/2a/ef/042aefaccd947a8c07f36b11f228ba2e.gif');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow-x: hidden;
+}
+
+/* Floating hearts animation */
+.heart {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  background: red;
+  transform: rotate(45deg);
+  animation: float 6s infinite;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.heart:before,
+.heart:after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: red;
+  border-radius: 50%;
+}
+
+.heart:before {
+  top: -10px;
+  left: 0;
+}
+
+.heart:after {
+  left: 10px;
+  top: 0;
+}
+
+@keyframes float {
+  0% {
+    bottom: -50px;
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    bottom: 110vh;
+    opacity: 0;
+  }
+}
+
+.container {
+  display: none;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  gap: 20px;
+  max-width: 600px;
+  margin: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+
+.container.active {
+  display: flex;
+  animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.gif {
+  width: 200px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+h1 {
+  color: #e91e63;
+  font-size: 2em;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+p {
+  color: #555;
+  font-size: 1.2em;
+}
+
+.btn {
+  display: flex;
+  gap: 25px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn a {
+  text-decoration: none;
+  color: #fff;
+  padding: 15px 35px;
+  border-radius: 50px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.3s ease;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.btn a:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 7px 20px rgba(0,0,0,0.4);
+}
+
+.btn a.yes {
+  background: linear-gradient(135deg, #28a745, #20c997);
+}
+
+.btn a:not(.yes) {
+  background: linear-gradient(135deg, #dc3545, #c82333);
+}
+
+/* Quiz styles */
+.quiz-option {
+  background: #f8f9fa;
+  border: 2px solid #dee2e6;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+  width: 100%;
+}
+
+.quiz-option:hover {
+  background: #e9ecef;
+  border-color: #e91e63;
+  transform: translateX(5px);
+}
+
+/* Memory game */
+.memory-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 80px);
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.memory-card {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2em;
+  color: white;
+  transition: all 0.3s;
+}
+
+.memory-card:hover {
+  transform: scale(1.05);
+}
+
+.memory-card.flipped {
+  background: white;
+  border: 2px solid #e91e63;
+}
+
+.memory-card.matched {
+  background: #28a745;
+  cursor: default;
+}
+
+/* Typing game */
+.typing-input {
+  padding: 15px;
+  font-size: 1.2em;
+  border: 3px solid #e91e63;
+  border-radius: 10px;
+  width: 100%;
+  margin: 10px 0;
+}
+
+/* Progress bar */
+.progress-bar {
+  width: 100%;
+  height: 30px;
+  background: #e9ecef;
+  border-radius: 15px;
+  overflow: hidden;
+  margin: 20px 0;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #e91e63, #ff6b9d);
+  width: 0%;
+  transition: width 0.5s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+}
+
+/* Countdown timer */
+.countdown {
+  font-size: 3em;
+  color: #e91e63;
+  font-weight: bold;
+  margin: 20px 0;
+}
+
+/* Star rating */
+.stars {
+  font-size: 3em;
+  cursor: pointer;
+}
+
+.star {
+  color: #ddd;
+  transition: color 0.2s;
+}
+
+.star.filled {
+  color: #ffd700;
+}
+
+/* Confetti */
+.confetti {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  background: #f0f;
+  position: absolute;
+  animation: confetti-fall 3s linear;
+}
+
+@keyframes confetti-fall {
+  to {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Slider */
+.love-slider {
+  width: 100%;
+  margin: 20px 0;
+}
+
+input[type="range"] {
+  width: 100%;
+  height: 15px;
+  border-radius: 10px;
+  background: #ddd;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #e91e63;
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #e91e63;
+  cursor: pointer;
+}
+
+.shake {
+  animation: shake 0.5s;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+/* Pulse animation for YES button */
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.pulse {
+  animation: pulse 1s infinite;
+}
+
+/* Photo gallery */
+.photo-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.photo-item {
+  width: 100%;
+  height: 150px;
+  border-radius: 10px;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.photo-item:hover {
+  transform: scale(1.1);
+}
+
+/* Music note animation */
+.music-note {
+  position: fixed;
+  font-size: 2em;
+  animation: float-note 4s infinite;
+  opacity: 0;
+}
+
+@keyframes float-note {
+  0% {
+    bottom: 0;
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    bottom: 100vh;
+    opacity: 0;
+  }
+}
+
+/* Math problem */
+.math-input {
+  padding: 15px;
+  font-size: 1.5em;
+  border: 3px solid #e91e63;
+  border-radius: 10px;
+  width: 150px;
+  text-align: center;
+  margin: 10px 0;
+}
+
+/* Color buttons */
+.color-buttons {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.color-btn {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid white;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.color-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Catch the button game */
+.catch-game {
+  width: 100%;
+  height: 300px;
+  border: 3px solid #e91e63;
+  border-radius: 15px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.catch-target {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background: #28a745;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5em;
+  transition: all 0.3s;
+}
+
+.catch-target:hover {
+  transform: scale(1.2);
+}
+
+/* Spinner */
+.spinner {
+  width: 200px;
+  height: 200px;
+  border: 15px solid #f3f3f3;
+  border-top: 15px solid #e91e63;
+  border-radius: 50%;
+  animation: spin 2s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Invisible button */
+.invisible-btn {
+  opacity: 0;
+  transition: opacity 2s;
+}
+
+.invisible-btn.visible {
+  opacity: 1;
+}
+</style>
+</head>
+<body>
+
+<!-- STEP 1: Initial Question -->
+<div class="container active" id="page1">
+  <img class="gif" src="https://media1.tenor.com/m/GOabrbLMl4AAAAAd/plink-cat-plink.gif" alt="cute gif" />
+  <h1>Hey Akanksha! 💖</h1>
+  <p>Will you be Vivek's Valentine? 😊</p>
+  <p style="font-size: 0.9em; color: #999;">(Click wisely... the NO button has consequences 😏)</p>
+  <div class="btn">
+    <a class="yes pulse" onclick="yesClicked()">Yes! 💕</a>
+    <a onclick="noClicked('no1')">No</a>
+  </div>
+</div>
+
+<!-- REJECTION 1: The Sad Puppy -->
+<div class="container" id="no1">
+  <img class="gif" src="https://media1.tenor.com/m/14b3oQe1uw0AAAAd/cat-crying-cat.gif" />
+  <h1>Ouch! That hurt! 😭</h1>
+  <p>Vivek is literally crying right now...</p>
+  <p style="font-size: 0.9em;">Are you sure about this, Akanksha? 🥺</p>
+  <div class="btn">
+    <a class="yes" onclick="yesClicked()">Yes! 💕</a>
+    <a onclick="noClicked('no2')">Still No</a>
+  </div>
+</div>
+
+<!-- REJECTION 2: The Negotiator -->
+<div class="container" id="no2">
+  <img class="gif" src="https://media1.tenor.com/m/FlMAkHrOrF8AAAAd/cat-flabbergasted.gif" />
+  <h1>Okay, let's make a deal! 🤝</h1>
+  <p>How about I promise to:</p>
+  <p>✅ Never forget your birthday<br>
+  ✅ Share my food (even pizza!)<br>
+  ✅ Watch your favorite movies<br>
+  ✅ Give unlimited hugs</p>
+  <div class="btn">
+    <a class="yes" onclick="yesClicked()">Deal! 💕</a>
+    <a onclick="noClicked('no3')">Nope</a>
+  </div>
+</div>
+
+<!-- REJECTION 3: The Guilt Trip -->
+<div class="container" id="no3">
+  <img class="gif" src="https://media.tenor.com/yJAUlAT68aAAAAAM/cat-cute.gif" />
+  <h1>Do you know what today is? 📅</h1>
+  <p>It's the day Vivek gathered ALL his courage...</p>
+  <p>...to ask the most amazing girl in the world...</p>
+  <p>...to be his Valentine! 💝</p>
+  <div class="btn">
+    <a class="yes" onclick="yesClicked()">Aww, Yes! 💕</a>
+    <a onclick="noClicked('no4')">Nice try, No</a>
+  </div>
+</div>
+
+<!-- REJECTION 4: The Math Test -->
+<div class="container" id="no4">
+  <img class="gif" src="https://media.tenor.com/8hGZF0NSwNgAAAAM/cat-kitty.gif" />
+  <h1>Solve this to continue! 🧮</h1>
+  <p style="font-size: 1.5em; color: #e91e63;">If Vivek loves Akanksha = ∞<br>
+  And Akanksha loves Vivek = ?</p>
+  <input type="text" class="math-input" id="mathAnswer" placeholder="Answer">
+  <button class="btn" style="margin-top: 10px;">
+    <a onclick="checkMath()">Submit</a>
+  </button>
+  <p id="mathFeedback" style="color: #e91e63; font-weight: bold;"></p>
+</div>
+
+<!-- REJECTION 5: The Bribe -->
+<div class="container" id="no5">
+  <img class="gif" src="https://media.tenor.com/5SUSd91iZe8AAAAM/cat-cute.gif" />
+  <h1>What if I offer you... 🎁</h1>
+  <div class="quiz-option" onclick="yesClicked()">🍫 Unlimited chocolate</div>
+  <div class="quiz-option" onclick="yesClicked()">☕ Coffee dates every week</div>
+  <div class="quiz-option" onclick="yesClicked()">🎬 Netflix marathons together</div>
+  <div class="quiz-option" onclick="noClicked('no6')">Nothing works, No!</div>
+</div>
+
+<!-- REJECTION 6: The Reverse Psychology -->
+<div class="container" id="no6">
+  <img class="gif" src="https://media.tenor.com/dYDJk3-P7e4AAAAM/cat-shaking.gif" />
+  <h1>You know what? 🤔</h1>
+  <p>You're absolutely right to say no!</p>
+  <p>Vivek is terrible! He's funny, caring, and would treat you like a queen...</p>
+  <p>Who would want that? 🙄</p>
+  <div class="btn">
+    <a class="yes" onclick="yesClicked()">Wait, I want that! 💕</a>
+    <a onclick="noClicked('no7')">Exactly, No!</a>
+  </div>
+</div>
+
+<!-- REJECTION 7: The Statistics -->
+<div class="container" id="no7">
+  <img class="gif" src="https://media.tenor.com/BwwiHLbZ1KUAAAAM/cat-love.gif" />
+  <h1>Fun Fact Time! 📊</h1>
+  <p>99.9% of people who say YES to Vivek report:</p>
+  <p>✨ Increased happiness<br>
+  😊 Daily smiles<br>
+  💖 Butterflies in stomach<br>
+  🎉 Best decision ever</p>
+  <p>Join the 99.9%, Akanksha!</p>
+  <div class="btn">
+    <a class="yes" onclick="yesClicked()">Okay fine, Yes! 💕</a>
+    <a onclick="noClicked('no8')">I'll be the 0.1%</a>
+  </div>
+</div>
+
+<!-- REJECTION 8: The Fortune Teller -->
+<div class="container" id="no8">
+  <img class="gif" src="https://media.tenor.com/ZcQL8xaUxYsAAAAM/cat-shock.gif" />
+  <h1>🔮 I see your future... 🔮</h1>
+  <p>If you say YES: Happiness, love, and endless adventures!</p>
+  <p>If you say NO: You'll always wonder "what if?" 😢</p>
+  <p>Choose wisely, Akanksha...</p>
+  <div class="btn">
+    <a class="yes" onclick="yesClicked()">YES to happiness! 💕</a>
+    <a onclick="noClicked('no9')">I'll take my chances</a>
+  </div>
+</div>
+
+<!-- REJECTION 9: The Typing Challenge -->
+<div class="container" id="no9">
+  <img class="gif" src="https://media.tenor.com/HJvqN2i7kP8AAAAM/milk-and-mocha-cute.gif" />
+  <h1>Type this to continue! ⌨️</h1>
+  <p style="color: #e91e63; font-size: 1.3em;">"Vivek is the best"</p>
+  <input type="text" class="typing-input" id="typingInput" placeholder="Type here..." oninput="checkTyping(this.value)">
+  <p id="typingFeedback" style="color: #e91e63; font-weight: bold;"></p>
+</div>
+
+<!-- REJECTION 10: The Color Test -->
+<div class="container" id="no10">
+  <img class="gif" src="https://media.tenor.com/hid2PMVIlowest/AAAAM/sad-cat-sad.gif" />
+  <h1>Pick Vivek's favorite color! 🎨</h1>
+  <p>(Hint: It's the color of love 💖)</p>
+  <div class="color-buttons">
+    <div class="color-btn" style="background: blue;" onclick="wrongColor()"></div>
+    <div class="color-btn" style="background: green;" onclick="wrongColor()"></div>
+    <div class="color-btn" style="background: red;" onclick="show('no11')"></div>
+    <div class="color-btn" style="background: yellow;" onclick="wrongColor()"></div>
+  </div>
+  <p id="colorFeedback" style="margin-top: 10px;"></p>
+</div>
+
+<!-- REJECTION 11: The Slider -->
+<div class="container" id="no11">
+  <img class="gif" src="https://media.tenor.com/ObWqeH4d8bMAAAAC/love-heart.gif" />
+  <h1>Rate how much you like Vivek! 📈</h1>
+  <p>(Slide all the way to 100%! 😉)</p>
+  <div class="love-slider">
+    <input type="range" min="0" max="100" value="0" id="loveRange" oninput="checkSlider(this.value)">
+    <p id="sliderValue" style="font-size: 1.5em; color: #e91e63;">0% 😢</p>
+  </div>
+</div>
+
+<!-- REJECTION 12: The Memory Game -->
+<div class="container" id="no12">
+  <img class="gif" src="https://media.tenor.com/TfNSeiRGVGUAAAAC/kiss-love.gif" />
+  <h1>Match the hearts! 💕</h1>
+  <p>Find all pairs to prove you care!</p>
+  <div class="memory-grid" id="memoryGrid"></div>
+  <p id="memoryScore" style="font-size: 1.2em; color: #e91e63;">Matches: 0/4</p>
+</div>
+
+<!-- REJECTION 13: The Invisible Button -->
+<div class="container" id="no13">
+  <img class="gif" src="https://media.tenor.com/DvCElWlGBHQAAAAC/i-love-you-love.gif" />
+  <h1>Akanksha, be patient... ⏳</h1>
+  <p>Wait for the YES button to appear...</p>
+  <p style="font-size: 0.9em; color: #999;">(Good things come to those who wait!)</p>
+  <div class="btn">
+    <a class="yes invisible-btn" id="invisibleYes" onclick="yesClicked()">Yes! 💕</a>
+  </div>
+</div>
+
+<!-- REJECTION 14: The Loading Screen -->
+<div class="container" id="no14">
+  <img class="gif" src="https://media.tenor.com/GOabrbLMl4AAAAAd/plink-cat-plink.gif" />
+  <h1>Processing your rejection... 💔</h1>
+  <div class="spinner"></div>
+  <p id="loadingText">Loading...</p>
+</div>
+
+<!-- REJECTION 15: The Rhyme Time -->
+<div class="container" id="no15">
+  <img class="gif" src="https://media.tenor.com/yJAUlAT68aAAAAAM/cat-cute.gif" />
+  <h1>Vivek wrote you a poem! 📝</h1>
+  <p style="font-style: italic; color: #555; line-height: 1.8;">
+    Roses are red,<br>
+    Violets are blue,<br>
+    Akanksha is amazing,<br>
+    Can I be with you? 🌹
+  </p>
+  <div class="btn">
+    <a class="yes" onclick="yesClicked()">So sweet, Yes! 💕</a>
+    <a onclick="noClicked('no16')">Not a poet, No</a>
+  </div>
+</div>
+
+<!-- REJECTION 16: The Star Rating -->
+<div class="container" id="no16">
+  <img class="gif" src="https://media.tenor.com/BwwiHLbZ1KUAAAAM/cat-love.gif" />
+  <h1>Rate Vivek's effort! ⭐</h1>
+  <p>He made this whole website for you!</p>
+  <div class="stars" id="starRating">
+    <span class="star" onclick="rateStar(1)">☆</span>
+    <span class="star" onclick="rateStar(2)">☆</span>
+    <span class="star" onclick="rateStar(3)">☆</span>
+    <span class="star" onclick="rateStar(4)">☆</span>
+    <span class="star" onclick="rateStar(5)">☆</span>
+  </div>
+  <p id="ratingFeedback"></p>
+</div>
+
+<!-- REJECTION 17: The Countdown -->
+<div class="container" id="no17">
+  <img class="gif" src="https://media.tenor.com/ZcQL8xaUxYsAAAAM/cat-shock.gif" />
+  <h1>URGENT! ⏰</h1>
+  <p>This offer expires in:</p>
+  <div class="countdown" id="countdown">10</div>
+  <p>Say YES before it's too late!</p>
+  <div class="btn">
+    <a class="yes" onclick="yesClicked()">YES YES YES! 💕</a>
+  </div>
+</div>
+
+<!-- REJECTION 18: The Catch Game -->
+<div class="container" id="no18">
+  <img class="gif" src="https://media.tenor.com/8hGZF0NSwNgAAAAM/cat-kitty.gif" />
+  <h1>Catch the heart! 💖</h1>
+  <p>Click it 5 times to continue!</p>
+  <div class="catch-game" id="catchGame">
+    <div class="catch-target" onclick="catchHeart()">💖</div>
+  </div>
+  <p id="catchScore" style="font-size: 1.2em; color: #e91e63;">Caught: 0/5</p>
+</div>
+
+<!-- REJECTION 19: The Emotional Plea -->
+<div class="container" id="no19">
+  <img class="gif" src="https://media.tenor.com/hid2PMVIlowest/AAAAM/sad-cat-sad.gif" />
+  <h1>Akanksha... 🥺</h1>
+  <p>You're breaking Vivek's heart!</p>
+  <div class="progress-bar">
+    <div class="progress-fill" id="heartbreakBar" style="width: 95%;">95% Heartbroken 💔</div>
+  </div>
+  <p>Don't let it reach 100%!</p>
+  <div class="btn">
+    <a class="yes" onclick="yesClicked()">I'm sorry, YES! 💕</a>
+    <a onclick="noClicked('no20')">Let it break</a>
+  </div>
+</div>
+
+<!-- REJECTION 20: The Moving Button -->
+<div class="container" id="no20">
+  <img class="gif" src="https://i.postimg.cc/CLKNWM2t/Snapchat-1566756623-ezgif-com-video-to-gif-converter-(1).gif" />
+  <h1>You're stubborn, Akanksha! 😤</h1>
+  <p>But that's why Vivek likes you! 😊</p>
+  <p style="font-size: 0.9em; color: #999;">Try clicking NO now... I dare you! 😏</p>
+  <div class="btn">
+    <a class="yes" onclick="yesClicked()">Fine, YES! 💕</a>
+    <a id="move-random">No (try me)</a>
+  </div>
+</div>
+
+<!-- REJECTION 21: The Final Boss -->
+<div class="container" id="no21">
+  <img class="gif" src="https://media.tenor.com/FlMAkHrOrF8AAAAd/cat-flabbergasted.gif" />
+  <h1>FINAL QUESTION! 🎯</h1>
+  <p>Complete this sentence:</p>
+  <p style="font-size: 1.3em; color: #e91e63;">"Vivek is ________"</p>
+  <div class="quiz-option" onclick="yesClicked()">Amazing and I'll be his Valentine! 💖</div>
+  <div class="quiz-option" onclick="yesClicked()">The best and I choose YES! ✨</div>
+  <div class="quiz-option" onclick="yesClicked()">Perfect for me! 💕</div>
+  <div class="quiz-option" onclick="alert('Wrong answer! 😜 Try again!'); return false;">Annoying (this won't work!)</div>
+</div>
+
+<!-- REJECTION 22: The Emotional Blackmail -->
+<div class="container" id="no22">
+  <img class="gif" src="https://media.tenor.com/14b3oQe1uw0AAAAd/cat-crying-cat.gif" />
+  <h1>Do you know what you're doing? 😭</h1>
+  <p>Somewhere, a puppy is crying...</p>
+  <p>A flower is wilting...</p>
+  <p>And Vivek's heart is shattering...</p>
+  <p>All because you won't say YES! 💔</p>
+  <div class="btn">
+    <a class="yes" onclick="yesClicked()">Stop! I'll say YES! 💕</a>
+    <a onclick="noClicked('no23')">I'm heartless, No</a>
+  </div>
+</div>
+
+<!-- REJECTION 23: The Bargaining -->
+<div class="container" id="no23">
+  <img class="gif" src="https://media.tenor.com/yJAUlAT68aAAAAAM/cat-cute.gif" />
+  <h1>Let's be reasonable! 🤔</h1>
+  <p>How about a trial period?</p>
+  <p>✅ 7-day free trial<br>
+  ✅ No commitment required<br>
+  ✅ Cancel anytime (you won't want to!)<br>
+  ✅ 100% satisfaction guaranteed</p>
+  <div class="btn">
+    <a class="yes" onclick="yesClicked()">I'll try it, YES! 💕</a>
+    <a onclick="noClicked('no24')">Not interested</a>
+  </div>
+</div>
+
+<!-- REJECTION 24: The Scientific Proof -->
+<div class="container" id="no24">
+  <img class="gif" src="https://media.tenor.com/8hGZF0NSwNgAAAAM/cat-kitty.gif" />
+  <h1>According to science... 🔬</h1>
+  <p>Vivek + Akanksha = Perfect Match!</p>
+  <p>The formula is simple:</p>
+  <p style="font-size: 1.2em; background: #f0f0f0; padding: 15px; border-radius: 10px;">
+    (Vivek's love × Akanksha's smile) ÷ Distance = ∞
+  </p>
+  <p>You can't argue with math! 🧮</p>
+  <div class="btn">
+    <a class="yes" onclick="yesClicked()">Science wins, YES! 💕</a>
+    <a onclick="noClicked('no25')">I failed math anyway</a>
+  </div>
+</div>
+
+<!-- REJECTION 25: The Last Stand -->
+<div class="container" id="no25">
+  <img class="gif" src="https://media.tenor.com/hid2PMVIlowest/AAAAM/sad-cat-sad.gif" />
+  <h1>This is it, Akanksha... 😢</h1>
+  <p>After this, there's no going back...</p>
+  <p>Vivek's heart can only take so much...</p>
+  <p style="font-size: 1.1em; color: #e91e63; font-weight: bold;">Will you PLEASE be his Valentine?</p>
+  <div class="btn">
+    <a class="yes" style="font-size: 1.5em;" onclick="yesClicked()">YESSSS! 💕💕💕</a>
+    <a onclick="alert('Really?! 😱 Okay, one more chance...'); noClicked('no20')">Still... no 😬</a>
+  </div>
+</div>
+
+<!-- FINAL YES PAGE -->
+<div class="container" id="yes">
+  <img class="gif" src="https://media.tenor.com/mKr-KcMW9RcAAAAi/cute-bears.gif" />
+  <h1>YESSSS! AKANKSHA SAID YES! 🎉</h1>
+  <p style="font-size: 1.5em; color: #e91e63;">Vivek is the HAPPIEST person alive! 💖</p>
+  <p>Thank you for making this Valentine's Day magical!</p>
+  <p style="font-size: 1.1em;">You're officially Vivek's Valentine! 🌹</p>
+  <div class="photo-gallery">
+    <img class="photo-item" src="https://media.tenor.com/BUW-P3kt6KAAAAAC/love-heart.gif" alt="love">
+    <img class="photo-item" src="https://media.tenor.com/ObWqeH4d8bMAAAAC/love-you.gif" alt="love">
+    <img class="photo-item" src="https://media.tenor.com/TfNSeiRGVGUAAAAC/kiss-love.gif" alt="love">
+    <img class="photo-item" src="https://media.tenor.com/DvCElWlGBHQAAAAC/i-love-you-love.gif" alt="love">
+  </div>
+  <button class="btn" style="margin-top: 20px; border: none;" onclick="createFireworks()">
+    <a class="yes" style="font-size: 1.3em;">🎆 CELEBRATE! 🎆</a>
+  </button>
+  <p style="margin-top: 20px; font-size: 0.9em; color: #999;">
+    Made with 💖 by Vivek for Akanksha
+  </p>
+</div>
+
+<script>
+let yesScale = 1;
+let heartsInterval;
+let musicInterval;
+let catchCount = 0;
+
+// Create floating hearts
+function createHeart() {
+  const heart = document.createElement('div');
+  heart.className = 'heart';
+  heart.style.left = Math.random() * 100 + 'vw';
+  heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+  document.body.appendChild(heart);
+  
+  setTimeout(() => heart.remove(), 6000);
+}
+
+// Create music notes
+function createMusicNote() {
+  const note = document.createElement('div');
+  note.className = 'music-note';
+  note.textContent = ['♪', '♫', '♬'][Math.floor(Math.random() * 3)];
+  note.style.left = Math.random() * 100 + 'vw';
+  note.style.animationDelay = Math.random() * 2 + 's';
+  document.body.appendChild(note);
+  
+  setTimeout(() => note.remove(), 4000);
+}
+
+// Start animations
+heartsInterval = setInterval(createHeart, 500);
+musicInterval = setInterval(createMusicNote, 1000);
+
+function show(id) {
+  document.querySelector('.container.active').classList.remove('active');
+  document.getElementById(id).classList.add('active');
+  applyYesSize();
+  
+  // Special handlers for specific pages
+  if (id === 'no12') {
+    initMemoryGame();
+  } else if (id === 'no17') {
+    startCountdown();
+  } else if (id === 'no13') {
+    setTimeout(() => {
+      document.getElementById('invisibleYes').classList.add('visible');
+    }, 3000);
+  } else if (id === 'no14') {
+    setTimeout(() => {
+      document.getElementById('loadingText').textContent = 'Error: Rejection not allowed! 😅';
+      setTimeout(() => show('no15'), 2000);
+    }, 3000);
+  } else if (id === 'no18') {
+    initCatchGame();
+  }
+}
+
+function noClicked(nextId) {
+  yesScale += 0.25;
+  show(nextId);
+  
+  // Shake animation
+  document.querySelector('.container.active').classList.add('shake');
+  setTimeout(() => {
+    document.querySelector('.container.active').classList.remove('shake');
+  }, 500);
+}
+
+function yesClicked() {
+  show('yes');
+  createFireworks();
+  // More hearts!
+  for (let i = 0; i < 100; i++) {
+    setTimeout(createHeart, i * 50);
+  }
+}
+
+function applyYesSize() {
+  document.querySelectorAll('.yes').forEach(btn => {
+    btn.style.transform = `scale(${yesScale})`;
+  });
+}
+
+// Math challenge
+function checkMath() {
+  const answer = document.getElementById('mathAnswer').value.toLowerCase();
+  const feedback = document.getElementById('mathFeedback');
+  
+  if (answer === '∞' || answer === 'infinity' || answer === 'infinite' || answer.includes('infin')) {
+    feedback.textContent = "Correct! 💖";
+    feedback.style.color = "#28a745";
+    setTimeout(() => show('no5'), 1500);
+  } else {
+    feedback.textContent = "Hint: Akanksha's love for Vivek is also infinite! ♾️";
+    feedback.style.color = "#ffc107";
+  }
+}
+
+// Typing challenge
+function checkTyping(value) {
+  const target = "Vivek is the best";
+  const feedback = document.getElementById('typingFeedback');
+  
+  if (value.toLowerCase() === target.toLowerCase()) {
+    feedback.textContent = "That's right! ✨";
+    feedback.style.color = "#28a745";
+    setTimeout(() => show('no10'), 1000);
+  } else if (target.toLowerCase().startsWith(value.toLowerCase()) && value.length > 0) {
+    feedback.textContent = "Keep typing... 💕";
+    feedback.style.color = "#ffc107";
+  } else if (value.length > 0) {
+    feedback.textContent = "Type exactly: 'Vivek is the best' 😊";
+    feedback.style.color = "#dc3545";
+  }
+}
+
+// Color test
+function wrongColor() {
+  document.getElementById('colorFeedback').textContent = "Wrong! Try the color of love! ❤️";
+  document.getElementById('colorFeedback').style.color = "#dc3545";
+}
+
+// Slider challenge
+function checkSlider(value) {
+  const display = document.getElementById('sliderValue');
+  
+  if (value < 30) {
+    display.textContent = value + '% 😢 (Too low!)';
+    display.style.color = '#dc3545';
+  } else if (value < 70) {
+    display.textContent = value + '% 🤔 (Getting there!)';
+    display.style.color = '#ffc107';
+  } else if (value < 100) {
+    display.textContent = value + '% 😊 (Almost there!)';
+    display.style.color = '#28a745';
+  } else {
+    display.textContent = value + '% 💖 (PERFECT!)';
+    display.style.color = '#e91e63';
+    setTimeout(() => {
+      alert('That\'s the spirit! 💕');
+      show('no12');
+    }, 500);
+  }
+}
+
+// Memory game
+let memoryCards = [];
+let flippedCards = [];
+let matchedPairs = 0;
+
+function initMemoryGame() {
+  const symbols = ['💖', '💕', '💗', '💝', '💖', '💕', '💗', '💝'];
+  const shuffled = symbols.sort(() => Math.random() - 0.5);
+  const grid = document.getElementById('memoryGrid');
+  grid.innerHTML = '';
+  memoryCards = [];
+  flippedCards = [];
+  matchedPairs = 0;
+  
+  shuffled.forEach((symbol, index) => {
+    const card = document.createElement('div');
+    card.className = 'memory-card';
+    card.dataset.symbol = symbol;
+    card.dataset.index = index;
+    card.textContent = '?';
+    card.onclick = () => flipCard(card);
+    grid.appendChild(card);
+    memoryCards.push(card);
+  });
+}
+
+function flipCard(card) {
+  if (flippedCards.length === 2 || card.classList.contains('flipped') || card.classList.contains('matched')) {
+    return;
+  }
+  
+  card.classList.add('flipped');
+  card.textContent = card.dataset.symbol;
+  flippedCards.push(card);
+  
+  if (flippedCards.length === 2) {
+    setTimeout(checkMatch, 600);
+  }
+}
+
+function checkMatch() {
+  const [card1, card2] = flippedCards;
+  
+  if (card1.dataset.symbol === card2.dataset.symbol) {
+    card1.classList.add('matched');
+    card2.classList.add('matched');
+    matchedPairs++;
+    document.getElementById('memoryScore').textContent = `Matches: ${matchedPairs}/4`;
+    
+    if (matchedPairs === 4) {
+      setTimeout(() => {
+        alert('You did it! You clearly have a good memory... remember to say YES! 💖');
+        show('no13');
+      }, 500);
+    }
+  } else {
+    card1.classList.remove('flipped');
+    card2.classList.remove('flipped');
+    card1.textContent = '?';
+    card2.textContent = '?';
+  }
+  
+  flippedCards = [];
+}
+
+// Star rating
+let currentRating = 0;
+
+function rateStar(rating) {
+  currentRating = rating;
+  const stars = document.querySelectorAll('.star');
+  const feedback = document.getElementById('ratingFeedback');
+  
+  stars.forEach((star, index) => {
+    if (index < rating) {
+      star.textContent = '★';
+      star.classList.add('filled');
+    } else {
+      star.textContent = '☆';
+      star.classList.remove('filled');
+    }
+  });
+  
+  if (rating === 5) {
+    feedback.textContent = "Perfect! Now say YES! 💖";
+    feedback.style.color = "#28a745";
+    setTimeout(() => show('no17'), 1500);
+  } else if (rating >= 3) {
+    feedback.textContent = "Good, but give 5 stars for YES! ⭐";
+    feedback.style.color = "#ffc107";
+  } else {
+    feedback.textContent = "Come on, more stars! 🥺";
+    feedback.style.color = "#dc3545";
+  }
+}
+
+// Countdown timer
+function startCountdown() {
+  let timeLeft = 10;
+  const countdownEl = document.getElementById('countdown');
+  
+  const timer = setInterval(() => {
+    timeLeft--;
+    countdownEl.textContent = timeLeft;
+    
+    if (timeLeft <= 3) {
+      countdownEl.style.color = '#dc3545';
+      countdownEl.style.animation = 'pulse 0.5s infinite';
+    }
+    
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      alert('Time\'s up! But Vivek will wait forever for you... 💕');
+      show('no18');
+    }
+  }, 1000);
+  
+  window.currentTimer = timer;
+}
+
+// Catch game
+function initCatchGame() {
+  catchCount = 0;
+  document.getElementById('catchScore').textContent = 'Caught: 0/5';
+  moveTarget();
+}
+
+function moveTarget() {
+  const game = document.getElementById('catchGame');
+  const target = game.querySelector('.catch-target');
+  const maxX = game.offsetWidth - 60;
+  const maxY = game.offsetHeight - 60;
+  
+  target.style.left = Math.random() * maxX + 'px';
+  target.style.top = Math.random() * maxY + 'px';
+}
+
+function catchHeart() {
+  catchCount++;
+  document.getElementById('catchScore').textContent = `Caught: ${catchCount}/5`;
+  
+  if (catchCount >= 5) {
+    alert('You caught them all! Your heart clearly wants this! 💖');
+    setTimeout(() => show('no19'), 500);
+  } else {
+    moveTarget();
+  }
+}
+
+// Runaway NO button
+const moveRandom = document.getElementById("move-random");
+if (moveRandom) {
+  moveRandom.addEventListener("mouseenter", function () {
+    this.style.position = "absolute";
+    this.style.top = Math.random() * 70 + "%";
+    this.style.left = Math.random() * 70 + "%";
+  });
+  
+  moveRandom.addEventListener("touchstart", function (e) {
+    e.preventDefault();
+    this.style.position = "absolute";
+    this.style.top = Math.random() * 70 + "%";
+    this.style.left = Math.random() * 70 + "%";
+  });
+}
+
+// Fireworks effect
+function createFireworks() {
+  for (let i = 0; i < 150; i++) {
+    setTimeout(() => {
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+      confetti.style.left = Math.random() * 100 + 'vw';
+      confetti.style.top = '0';
+      confetti.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
+      confetti.style.animationDelay = Math.random() * 0.5 + 's';
+      document.body.appendChild(confetti);
+      
+      setTimeout(() => confetti.remove(), 3000);
+    }, i * 20);
+  }
+}
+
+// Initialize
+applyYesSize();
+</script>
+
+</body>
+</html>
